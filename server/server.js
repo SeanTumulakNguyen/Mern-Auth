@@ -9,7 +9,7 @@ const app = express();
 
 // connect to database
 mongoose
-	.connect(process.env.CLOUD_DATABASE, {
+	.connect(process.env.LOCAL_DATABASE, {
 		useNewUrlParser: true,
 		useFindAndModify: false,
 		useUnifiedTopology: true,
