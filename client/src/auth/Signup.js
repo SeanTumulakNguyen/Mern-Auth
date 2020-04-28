@@ -5,6 +5,7 @@ import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 
+
 const Signup = () => {
     const [values, setValues] = useState({
         name: '',
@@ -16,12 +17,29 @@ const Signup = () => {
     const { name, email, password, buttonText } = values
 
     const handleChange = (name) => (e) => {
-        e.preventDefault()
+        // console.log(e.target.value)
+        setValues({...values, [name]: e.target.value })
 
     }
 
     const clickSubmit = (e) => {
-
+        e.preventDefault()
+        setValues({ ...values, buttonText: 'Submitted' })
+        axios({
+            method: 'POST',
+            url: `${process.env.REACT_APP_API}/signup`,
+            data: {name, email, password}
+        })
+            .then(response => {
+                console.log('SIGNUP SUCCESS', response)
+                setValues({ ...values, name: '', email: '', password: '', buttonText: 'Submitted' })
+                toast.success(response.data.message)
+            })
+            .catch(error => {
+                console.log('SIGNUP ERROR', error.response.data)
+                setValues({ ...values, buttonText: 'Submit' })
+                toast.error(error.response.data.error)
+        })
     }
 
     const signupForm = () => (
